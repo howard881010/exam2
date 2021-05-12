@@ -228,11 +228,6 @@ void Tilt_detection()
         uLCD.text_height(2);
         uLCD.color(BLUE);
         uLCD.locate(2,1);
-
-        gesture_index = PredictGesture(interpreter->output(0)->data.f);
-        // Clear the buffer next time we read data
-        should_clear_buffer = gesture_index < label_num;
-
         uLCD.printf("\ngestureID %d\n", gesture_index);
         if(value[0] > 500 && mode == 1) {
             ext_value[message_num] = 1;
@@ -251,7 +246,7 @@ void Tilt_detection()
         ThisThread::sleep_for(500ms);
     }
     while (1) {
-		ThisThread::sleep_for(300ms);
+		ThisThread::sleep_for(1000ms);
 	}
 }
 // Return the result of the last prediction
@@ -356,7 +351,7 @@ int Gesture_determine()
     static tflite::MicroInterpreter static_interpreter(
         model, micro_op_resolver, tensor_arena, kTensorArenaSize, error_reporter);
     tflite::MicroInterpreter* interpreter = &static_interpreter;
-uLCD.printf("\ngestureID %d\n", gesture_index);
+
     // Allocate memory from the tensor_arena for the model's tensors
     interpreter->AllocateTensors();
 
